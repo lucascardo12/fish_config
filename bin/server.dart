@@ -6,6 +6,7 @@ import 'package:shelf_router/shelf_router.dart';
 
 import 'app/oceans/create.oceans.dart';
 import 'app/oceans/list.oceans.dart';
+import 'core/middlewares/authorize.dart';
 import 'core/services/db_service.dart';
 
 final db = DbService();
@@ -18,7 +19,7 @@ void main(List<String> args) async {
     ..put('/ocean/create', CreateOcean(db));
 
   // Configure a pipeline that logs requests.
-  final _handler = Pipeline().addMiddleware(logRequests()).addHandler(_router);
+  final _handler = Pipeline().addMiddleware(logRequests()).addMiddleware(Authorize()).addHandler(_router);
 
   // For running in containers, we respect the PORT environment variable.
   final port = int.parse(Platform.environment['PORT'] ?? '8080');
