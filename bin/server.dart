@@ -5,7 +5,11 @@ import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
 
 import 'app/oceans/create.oceans.dart';
-import 'app/oceans/list.oceans.dart';
+import 'app/oceans/oceans.list.dart';
+import 'app/oceans/remove.ocean.dart';
+import 'app/peixes/create.fish.dart';
+import 'app/peixes/list.fishes.dart';
+import 'app/peixes/remove.fish.dart';
 import 'core/middlewares/authorize.dart';
 import 'core/services/db_service.dart';
 
@@ -13,10 +17,15 @@ final db = DbService();
 void main(List<String> args) async {
   // Use any available host or container IP (usually `0.0.0.0`).
   final ip = InternetAddress.anyIPv4;
+  await db.inicialise();
 // Configure routes.
   final _router = Router()
-    ..get('/oceans', ListOcean(db))
-    ..put('/ocean/create', CreateOcean(db));
+    ..get('/oceans', ListOceans(db))
+    ..get('/fishes', ListFishes(db))
+    ..post('/ocean.create', CreateOcean(db))
+    ..post('/fish.create', CreateFish(db))
+    ..delete('/fish.remove', RemoveFishes(db))
+    ..delete('/ocean.remove', RemoveOceans(db));
 
   // Configure a pipeline that logs requests.
   final _handler = Pipeline().addMiddleware(logRequests()).addMiddleware(Authorize()).addHandler(_router);
