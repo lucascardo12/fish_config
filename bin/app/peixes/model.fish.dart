@@ -1,21 +1,21 @@
-class FishModel {
+class ModelFish {
   static String get collectionId => 'fishes';
   String? id;
   String name;
   dynamic valor;
-  String idOcean;
+  String idLake;
 
-  FishModel({
+  ModelFish({
     this.id,
-    required this.idOcean,
+    required this.idLake,
     required this.name,
     required this.valor,
   });
 
-  FishModel.fromJson(dynamic json)
+  ModelFish.fromJson(dynamic json)
       : name = json['name'],
         valor = json['valor'],
-        idOcean = json['idOcean'],
+        idLake = json['idLake'],
         id = json['_id'];
 
   Map<String, dynamic> toJson() {
@@ -23,7 +23,7 @@ class FishModel {
     data['_id'] = id;
     data['name'] = name;
     data['valor'] = valor;
-    data['idOcean'] = idOcean;
+    data['idLake'] = idLake;
     return data;
   }
 }

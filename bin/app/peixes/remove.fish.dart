@@ -21,11 +21,11 @@ class RemoveFishes {
         },
       );
     }
-    var fish = FishModel.fromJson(json.decode(body));
-    var collection = dbService.db.collection(FishModel.collectionId);
-    var oceans = await collection.remove(where.id(ObjectId.parse(fish.id!)));
+    var fish = ModelFish.fromJson(json.decode(body));
+    var collection = dbService.db.collection(ModelFish.collectionId);
+    var lakes = await collection.remove(where.id(ObjectId.parse(fish.id!)));
     return Response.ok(
-      json.encode(oceans),
+      json.encode(lakes),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
       },

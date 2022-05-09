@@ -4,7 +4,7 @@ import 'package:mongo_dart/mongo_dart.dart';
 import 'package:shelf/shelf.dart';
 
 import '../../core/services/db_service.dart';
-import '../oceans/ocean.model.dart';
+import '../lakes/model.lake.dart';
 import 'model.fish.dart';
 
 class CreateFish {
@@ -23,10 +23,10 @@ class CreateFish {
       );
     }
     try {
-      var fish = FishModel.fromJson(json.decode(body));
-      if (await verificarOceano(fish.idOcean)) {
+      var fish = ModelFish.fromJson(json.decode(body));
+      if (await verificarLake(fish.idLake)) {
         return Response.badRequest(
-          body: json.encode({'erro': 'não encontrei o oceano'}),
+          body: json.encode({'erro': 'não encontrei o lakeo'}),
           headers: {
             'Content-Type': 'application/json; charset=utf-8',
           },
@@ -40,7 +40,7 @@ class CreateFish {
           },
         );
       }
-      dbService.db.collection(FishModel.collectionId).insert(fish.toJson());
+      dbService.db.collection(ModelFish.collectionId).insert(fish.toJson());
     } catch (e) {
       dynamic erro = e;
       return Response.badRequest(
@@ -59,15 +59,15 @@ class CreateFish {
     );
   }
 
-  Future<bool> verificarOceano(String idOcean) async {
-    var ocean = await dbService.db.collection(OceanModel.collectionId).modernFindOne(
-          selector: where.id(ObjectId.parse(idOcean)),
+  Future<bool> verificarLake(String idLake) async {
+    var lake = await dbService.db.collection(ModelLake.collectionId).modernFindOne(
+          selector: where.id(ObjectId.parse(idLake)),
         );
-    return ocean == null;
+    return lake == null;
   }
 
   Future<bool> verificarCampoFish(String fieldName) async {
-    var dados = await dbService.db.collection(FishModel.collectionId).modernFindOne(
+    var dados = await dbService.db.collection(ModelFish.collectionId).modernFindOne(
           selector: where.eq('name', fieldName),
         );
     return dados != null;

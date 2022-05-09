@@ -4,9 +4,9 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-import 'app/oceans/create.oceans.dart';
-import 'app/oceans/oceans.list.dart';
-import 'app/oceans/remove.ocean.dart';
+import 'app/lakes/create.lake.dart';
+import 'app/lakes/lakes.list.dart';
+import 'app/lakes/remove.lake.dart';
 import 'app/peixes/create.fish.dart';
 import 'app/peixes/list.fishes.dart';
 import 'app/peixes/remove.fish.dart';
@@ -20,12 +20,12 @@ void main(List<String> args) async {
   await db.inicialise();
 // Configure routes.
   final _router = Router()
-    ..get('/oceans', ListOceans(db))
+    ..get('/lakes', ListLakes(db))
     ..get('/fishes', ListFishes(db))
-    ..post('/ocean.create', CreateOcean(db))
+    ..post('/lake.create', CreateLake(db))
     ..post('/fish.create', CreateFish(db))
     ..delete('/fish.remove', RemoveFishes(db))
-    ..delete('/ocean.remove', RemoveOceans(db));
+    ..delete('/lake.remove', RemoveLakes(db));
 
   // Configure a pipeline that logs requests.
   final _handler = Pipeline().addMiddleware(logRequests()).addMiddleware(Authorize()).addHandler(_router);

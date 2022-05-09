@@ -1,10 +1,10 @@
-class OceanModel {
-  static String get collectionId => 'oceans';
+class ModelLake {
+  static String get collectionId => 'lakes';
   String? id;
   String name;
-  OceanModel({this.id, required this.name});
+  ModelLake({this.id, required this.name});
 
-  OceanModel.fromJson(Map<String, dynamic> json)
+  ModelLake.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         id = json['_id'];
 
