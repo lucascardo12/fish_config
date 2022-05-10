@@ -1,15 +1,24 @@
 version: "3.9"
 services:
   fish:
+    restart: always
     build: .
     ports:
       - "8080:8080"
+    networks:
+      - fishnet
   mongodb:
+    restart: always
     image: mongo
     ports:
-      - 27017:27017
+      - "27017:27017"
     volumes:
       - ~/apps/mongo:/data/db
+    networks:
+      - fishnet
     environment:
       - MONGO_INITDB_ROOT_USERNAME=seunome
       - MONGO_INITDB_ROOT_PASSWORD=suasenha
+networks:
+  fishnet:
+    driver: bridge
