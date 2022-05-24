@@ -1,12 +1,20 @@
-version: "3.9"
+version: "3.7"
 services:
   fish:
     restart: always
     build: .
     ports:
-      - "8080:8080"
+      - "80:80"
     networks:
       - fishnet
+    environment:
+      - TOKEN_API=
+      - LOGIN_DB=seunome
+      - SENHA_DB=suasenha
+      - HOST_DB=mongodb:27017
+      - CLUSTER_DB=admin
+      - FORMAT_DB=mongodb
+      - PORT=80
   mongodb:
     restart: always
     image: mongo

@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:shelf/shelf.dart';
-import '../configs/credenciais.dart';
+
+import '../../server.dart';
 
 class Authorize {
   FutureOr<Response> Function(Request) call(innerHandler) {
@@ -18,7 +19,7 @@ class Authorize {
 
       final token = authorizationHeader.replaceFirst('Bearer', '').trim();
 
-      if (!token.trim().contains(Credenciais.tokenbaere)) {
+      if (!token.trim().contains(envs['TOKEN_API'] ?? '')) {
         return Response(401);
       }
 

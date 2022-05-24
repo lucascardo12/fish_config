@@ -10,11 +10,11 @@ import 'app/lakes/remove.lake.dart';
 import 'app/peixes/create.fish.dart';
 import 'app/peixes/list.fishes.dart';
 import 'app/peixes/remove.fish.dart';
-import 'core/configs/credenciais.dart';
 import 'core/middlewares/authorize.dart';
 import 'core/services/db_service.dart';
 
 final db = DbService();
+Map<String, String> envs = Platform.environment;
 void main(List<String> args) async {
   await db.inicialise();
   // Configure routes.
@@ -28,6 +28,6 @@ void main(List<String> args) async {
   // Configure a pipeline that logs requests.
   final _handler = Pipeline().addMiddleware(logRequests()).addMiddleware(Authorize()).addHandler(_router);
   // For running in containers, we respect the PORT environment variable.
-  final server = await serve(_handler, InternetAddress.anyIPv4, Credenciais.portAplication);
+  final server = await serve(_handler, InternetAddress.anyIPv4, int.parse(envs['PORT'] ?? '80'));
   print('Server listening on port ${server.port}');
 }
