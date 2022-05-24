@@ -7,9 +7,11 @@ import 'package:shelf_router/shelf_router.dart';
 import 'app/lakes/create.lake.dart';
 import 'app/lakes/lakes.list.dart';
 import 'app/lakes/remove.lake.dart';
+import 'app/lakes/update.lake.dart';
 import 'app/peixes/create.fish.dart';
 import 'app/peixes/list.fishes.dart';
 import 'app/peixes/remove.fish.dart';
+import 'app/peixes/update.fish.dart';
 import 'core/middlewares/authorize.dart';
 import 'core/services/db_service.dart';
 
@@ -25,7 +27,9 @@ void main(List<String> args) async {
     ..get('/lakes', ListLakes(db))
     ..get('/fishes', ListFishes(db))
     ..post('/lake.create', CreateLake(db))
+    ..put('/lake.update', UpdateLake(db))
     ..post('/fish.create', CreateFish(db))
+    ..put('/fish.update', UpdateFish(db))
     ..delete('/fish.remove', RemoveFishes(db))
     ..delete('/lake.remove', RemoveLakes(db));
   // Configure a pipeline that logs requests.
