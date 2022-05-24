@@ -4,6 +4,7 @@ import 'package:mongo_dart/mongo_dart.dart';
 import 'package:shelf/shelf.dart';
 
 import '../../core/services/db_service.dart';
+import '../../server.dart';
 import '../lakes/model.lake.dart';
 import 'model.fish.dart';
 
@@ -16,28 +17,22 @@ class CreateFish {
     var body = await req.readAsString();
     if (body.isEmpty) {
       return Response.badRequest(
-        body: json.encode({'erro': 'falta o parametro fish'}),
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-        },
+        body: json.encode({'erro': 'Falta o fish'}),
+        headers: header,
       );
     }
     try {
       var fish = ModelFish.fromJson(json.decode(body));
       if (await verificarLake(fish.idLake)) {
         return Response.badRequest(
-          body: json.encode({'erro': 'não encontrei o lakeo'}),
-          headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-          },
+          body: json.encode({'erro': 'Não encontrei o lake'}),
+          headers: header,
         );
       }
       if (await verificarCampoFish(fish.name)) {
         return Response.badRequest(
           body: json.encode({'erro': 'Fish já existe'}),
-          headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-          },
+          headers: header,
         );
       }
       dbService.db.collection(ModelFish.collectionId).insert(fish.toJson());
@@ -45,17 +40,13 @@ class CreateFish {
       dynamic erro = e;
       return Response.badRequest(
         body: json.encode({'erro': e.toString(), 'stack': erro.stackTrace.toString()}),
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-        },
+        headers: header,
       );
     }
 
     return Response.ok(
       json.encode({'status': 'sucesso'}),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-      },
+      headers: header,
     );
   }
 

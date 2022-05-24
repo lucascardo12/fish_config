@@ -15,6 +15,9 @@ import 'core/services/db_service.dart';
 
 final db = DbService();
 Map<String, String> envs = Platform.environment;
+const Map<String, String> header = {
+  'Content-Type': 'application/json; charset=utf-8',
+};
 void main(List<String> args) async {
   await db.inicialise();
   // Configure routes.

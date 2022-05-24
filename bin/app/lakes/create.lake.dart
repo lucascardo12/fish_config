@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:shelf/shelf.dart';
 
 import '../../core/services/db_service.dart';
+import '../../server.dart';
 import 'model.lake.dart';
 
 class CreateLake {
@@ -15,28 +16,22 @@ class CreateLake {
     if (body.isEmpty) {
       return Response.badRequest(
         body: json.encode({'erro': 'falta o parametro lake'}),
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-        },
+        headers: header,
       );
     }
     try {
       var lake = ModelLake.fromJson(json.decode(body));
       dbService.db.collection(ModelLake.collectionId).insert(lake.toJson());
     } catch (e) {
-      return Response.ok(
-        json.encode({'status': e.toString()}),
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-        },
+      return Response.badRequest(
+        body: json.encode({'erro': e.toString()}),
+        headers: header,
       );
     }
 
     return Response.ok(
       json.encode({'status': 'sucesso'}),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-      },
+      headers: header,
     );
   }
 }
