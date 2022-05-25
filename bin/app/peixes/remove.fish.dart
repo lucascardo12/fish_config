@@ -23,9 +23,15 @@ class RemoveFishes {
       }
       var fish = ModelFish.fromJson(json.decode(body));
       var collection = dbService.db.collection(ModelFish.collectionId);
-      var lakes = await collection.remove(where.id(ObjectId.parse(fish.id!)));
+      var map = await collection.deleteOne({'_id': fish.id});
+      if (map.nRemoved > 0) {
+        return Response.ok(
+          json.encode({'status': 'sucesso'}),
+          headers: header,
+        );
+      }
       return Response.ok(
-        json.encode(lakes),
+        json.encode({'erro': map.writeError?.errmsg}),
         headers: header,
       );
     } catch (e) {

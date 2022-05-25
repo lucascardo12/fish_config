@@ -23,9 +23,15 @@ class RemoveLakes {
       }
       var dado = ModelLake.fromJson(json.decode(body));
       var collection = dbService.db.collection(ModelLake.collectionId);
-      await collection.remove(where.id(ObjectId.parse(dado.id!)));
+      var map = await collection.deleteOne({'_id': dado.id});
+      if (map.nRemoved > 0) {
+        return Response.ok(
+          json.encode({'status': 'sucesso'}),
+          headers: header,
+        );
+      }
       return Response.ok(
-        json.encode({'status': 'sucesso'}),
+        json.encode({'erro': map.writeError?.errmsg}),
         headers: header,
       );
     } catch (e) {
