@@ -22,20 +22,25 @@ class UpdateLake {
     }
     try {
       var lake = ModelLake.fromJson(json.decode(body));
-      dbService.db.collection(ModelLake.collectionId).modernUpdate(
-            where.id(ObjectId.parse(lake.id!)),
-            lake.toJson(),
-          );
+      var map = await dbService.db.collection(ModelLake.collectionId).replaceOne(
+        {'_id': lake.id},
+        lake.toJson(),
+      );
+      if (map.nModified > 0) {
+        return Response.ok(
+          json.encode({'status': 'sucesso'}),
+          headers: header,
+        );
+      }
+      return Response.ok(
+        json.encode({'erro': map.errmsg}),
+        headers: header,
+      );
     } catch (e) {
       return Response.badRequest(
         body: json.encode({'erro': e.toString()}),
         headers: header,
       );
     }
-
-    return Response.ok(
-      json.encode({'status': 'sucesso'}),
-      headers: header,
-    );
   }
 }

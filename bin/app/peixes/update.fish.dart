@@ -29,9 +29,20 @@ class UpdateFish {
           headers: header,
         );
       }
-      dbService.db
-          .collection(ModelFish.collectionId)
-          .modernUpdate(where.id(ObjectId.parse(fish.id!)), fish.toJson());
+      var map = await dbService.db.collection(ModelFish.collectionId).replaceOne(
+        {'_id': fish.id},
+        fish.toJson(),
+      );
+      if (map.nModified > 0) {
+        return Response.ok(
+          json.encode({'status': 'sucesso'}),
+          headers: header,
+        );
+      }
+      return Response.ok(
+        json.encode({'erro': map.errmsg}),
+        headers: header,
+      );
     } catch (e) {
       dynamic erro = e;
       return Response.badRequest(
@@ -39,11 +50,6 @@ class UpdateFish {
         headers: header,
       );
     }
-
-    return Response.ok(
-      json.encode({'status': 'sucesso'}),
-      headers: header,
-    );
   }
 
   Future<bool> verificarLake(String idLake) async {
