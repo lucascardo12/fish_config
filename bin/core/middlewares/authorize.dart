@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:shelf/shelf.dart';
 
@@ -10,17 +11,17 @@ class Authorize {
       final authorizationHeader = request.headers['Authorization'] ?? request.headers['authorization'];
 
       if (authorizationHeader == null) {
-        return Response(401);
+        return Response.ok(json.encode({'erro': 'Sem acesso'}));
       }
 
       if (!authorizationHeader.startsWith('Bearer ')) {
-        return Response(401);
+        return Response.ok(json.encode({'erro': 'Sem acesso'}));
       }
 
       final token = authorizationHeader.replaceFirst('Bearer', '').trim();
 
       if (!token.trim().contains(envs['TOKEN_API'] ?? '')) {
-        return Response(401);
+        return Response.ok(json.encode({'erro': 'Sem acesso'}));
       }
 
       return Future.sync(() => innerHandler(request)).then((response) {
