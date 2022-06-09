@@ -22,9 +22,9 @@ class CreateLake {
     try {
       var lake = ModelLake.fromJson(json.decode(body));
       dbService.db.collection(ModelLake.collectionId).insert(lake.toJson());
-    } catch (e) {
+    } catch (e, s) {
       return Response.badRequest(
-        body: json.encode({'erro': e.toString()}),
+        body: json.encode({'erro': e.toString(), 'stack': s.toString()}),
         headers: header,
       );
     }

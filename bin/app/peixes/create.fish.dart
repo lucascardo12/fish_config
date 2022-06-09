@@ -35,11 +35,10 @@ class CreateFish {
           headers: header,
         );
       }
-      dbService.db.collection(ModelFish.collectionId).insert(fish.toJson());
-    } catch (e) {
-      dynamic erro = e;
+      await dbService.db.collection(ModelFish.collectionId).insert(fish.toJson());
+    } catch (e, s) {
       return Response.badRequest(
-        body: json.encode({'erro': e.toString(), 'stack': erro.stackTrace.toString()}),
+        body: json.encode({'erro': e.toString(), 'stack': s.toString()}),
         headers: header,
       );
     }

@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:mongo_dart/mongo_dart.dart';
 import 'package:shelf/shelf.dart';
 
 import '../../core/services/db_service.dart';
@@ -36,9 +34,9 @@ class UpdateLake {
         json.encode({'erro': map.errmsg}),
         headers: header,
       );
-    } catch (e) {
+    } catch (e, s) {
       return Response.badRequest(
-        body: json.encode({'erro': e.toString()}),
+        body: json.encode({'erro': e.toString(), 'stack': s.toString()}),
         headers: header,
       );
     }

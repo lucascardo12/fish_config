@@ -43,10 +43,9 @@ class UpdateFish {
         json.encode({'erro': map.errmsg}),
         headers: header,
       );
-    } catch (e) {
-      dynamic erro = e;
+    } catch (e, s) {
       return Response.badRequest(
-        body: json.encode({'erro': e.toString(), 'stack': erro.stackTrace.toString()}),
+        body: json.encode({'erro': e.toString(), 'stack': s.toString()}),
         headers: header,
       );
     }
